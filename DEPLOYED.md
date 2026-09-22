@@ -2,10 +2,38 @@
 
 - Droplet: apex-trading-desk (NYC1)
 - IP: 159.89.91.6
-- Public URL (Cloudflare quick tunnel): https://wallet-pix-difficulties-static.trycloudflare.com
-- Service: apex-trading-desk (uvicorn :8787), apex-desk-tunnel
+- Public URL (Cloudflare quick tunnel, secondary / can change): https://wallet-pix-difficulties-static.trycloudflare.com
+- Stable private URL: Tailscale MagicDNS (pending auth key — see STABLE_URL.md)
+- Service: apex-trading-desk (uvicorn 127.0.0.1:8787), apex-desk-tunnel, tailscaled (installed, awaiting join)
 - Note: Cruz live paper data still on Grok Bot box; New Guy chat uses XAI on VPS. Next: sync status feed or migrate bots.
 - Connect panel: Drive Attack folder + mailto backup + iCloud manual-help (GET /api/connect).
+
+
+## Stable private access (Tailscale) — preferred 24/7 URL
+
+**Preferred path (no domain purchase):** Tailscale MagicDNS / Tailscale IP over the private network.
+
+| Item | Detail |
+|------|--------|
+| Package | `tailscale` **1.102.4** installed on droplet; `tailscaled` enabled |
+| Join status | **Pending Apex auth key** — node is `Logged out.` until key is pasted |
+| Secret | `/etc/apex-trading-desk/tailscale.env` → `TS_AUTHKEY=` (mode 0600) |
+| Join script | `/usr/local/sbin/apex-desk-tailscale-up.sh` |
+| Publish | After join: `tailscale serve --bg --http=80 http://127.0.0.1:8787` |
+| Stable URL | `http://apex-trading-desk.<tailnet>.ts.net/` (printed after join) |
+| Desk auth | **Unchanged** — password gate + SMTP reset still apply |
+| Firewall | Port **8787 not** opened on UFW; desk stays on `127.0.0.1:8787` |
+| Secondary | trycloudflare (`apex-desk-tunnel`) left running; URL can change on restart |
+
+Full human steps (auth key + iPhone bookmark): see **[STABLE_URL.md](./STABLE_URL.md)**.
+
+Quick finish after Apex creates a key at https://login.tailscale.com/admin/settings/keys :
+
+```bash
+# On droplet:
+sudo nano /etc/apex-trading-desk/tailscale.env   # set TS_AUTHKEY=tskey-auth-…
+sudo /usr/local/sbin/apex-desk-tailscale-up.sh
+```
 
 ## Private access (password gate)
 
@@ -77,5 +105,6 @@ Password preference: `data/desk_password.txt` (if present) overrides `DESK_AUTH_
 
 ### Tunnel note
 
-The trycloudflare URL is still **secret-by-obscurity until `DESK_AUTH_PASSWORD` is set**.
-Set the password on the VPS before sharing the URL widely. Cloudflare Access is not required yet (no custom domain).
+The trycloudflare URL is a **secondary** public path; it **changes** when `apex-desk-tunnel` / cloudflared restarts.
+Prefer the **Tailscale MagicDNS** URL in [STABLE_URL.md](./STABLE_URL.md) for stable private 24/7 access (password gate still required).
+Cloudflare Access is not required yet (no custom domain).

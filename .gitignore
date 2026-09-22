@@ -1,0 +1,28 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+*.log
+*.pid
+.DS_Store
+
+# desk secrets / auth / smtp / reset state
+data/desk_auth_secret
+data/desk_password.txt
+data/desk_smtp.env
+data/desk_smtp.env.ok
+data/desk_last_reset*
+data/desk_reset_state.json
+*.pem
+*.key
+!*.pub
+
+# sync / paper / local runtime
+sync_*.log
+cloudflared.log
+cloudflared.pid
+desk.log
+data/paper*

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Apex Trading Desk</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>Apex Trading Desk</h1>
+          <p>Local office · read-only live status</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <button type="button" data-route="office" class="active">Office floor</button>
+        <button type="button" data-route="desk">Trading desk</button>
+        <button type="button" data-route="newguy">The New Guy</button>
+        <button type="button" id="btn-connect" class="nav-connect" aria-expanded="false" aria-controls="connect-panel">Connect</button>
+        <form id="logout-form" class="logout-form" method="post" action="/logout">
+          <button type="submit" class="nav-logout" title="Lock desk">Lock</button>
+        </form>
+      </nav>
+    </header>
+
+
+    <div id="connect-panel" class="connect-panel hidden" role="region" aria-label="Cloud backup">
+      <div class="connect-panel-inner panel">
+        <div class="connect-head">
+          <div>
+            <h2>Connect · cloud backup</h2>
+            <p class="muted">Drive for Attack uploads · email for a status dump · iCloud is manual only</p>
+          </div>
+          <button type="button" id="btn-connect-close" class="connect-close" aria-label="Close">×</button>
+        </div>
+        <div class="connect-grid">
+          <a id="connect-drive" class="connect-card" href="#" target="_blank" rel="noopener noreferrer">
+            <div class="connect-icon drive">G</div>
+            <div>
+              <h3>Google Drive</h3>
+              <p>Open Attack folder</p>
+            </div>
+          </a>
+          <a id="connect-email" class="connect-card" href="#">
+            <div class="connect-icon email">@</div>
+            <div>
+              <h3>Email backup</h3>
+              <p id="connect-email-label">mailto status dump</p>
+            </div>
+          </a>
+          <div class="connect-card connect-card-help" id="connect-icloud">
+            <div class="connect-icon icloud">☁</div>
+            <div>
+              <h3>iCloud</h3>
+              <p id="connect-icloud-help">Loading…</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="view-office">
+      <div class="hero">
+        <h2>Office floor</h2>
+        <p>Pick a desk. Cruz stays live from local heartbeat &amp; paper book. New Guy chats when the xAI key is present.</p>
+      </div>
+      <div id="office-grid" class="grid"></div>
+    </section>
+
+    <section id="view-desk" class="hidden">
+      <div class="hero">
+        <h2>Cruz Kraken Trading</h2>
+        <p>Telegram-style snapshot from local bot files. No trade controls.</p>
+      </div>
+      <div id="desk-stamp" class="muted" style="margin-bottom:8px;font-size:0.8rem"></div>
+      <div id="desk-body"></div>
+    </section>
+
+    <section id="view-newguy" class="hidden">
+      <div class="hero">
+        <h2>The New Guy</h2>
+        <p>High-drive Apex assistant. Multi-turn chat via xAI.</p>
+      </div>
+      <div class="panel chat-wrap">
+        <div id="chat-log" class="chat-log">
+          <div class="bubble assistant">
+            <div class="who">The New Guy</div>
+            Ready when you are. Ask about status, strategy, or anything Apex.
+          </div>
+        </div>
+        <div class="composer">
+          <input id="chat-input" type="text" placeholder="Message The New Guy…" autocomplete="off" />
+          <button type="button" id="chat-send">Send</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Apex Trading Desk · local only · bind 0.0.0.0:8787 · no secrets in git
+    </footer>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
